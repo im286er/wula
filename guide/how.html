@@ -1,0 +1,163 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>原理 — Wula.php</title>
+        <meta charset="utf-8">
+        <meta name="description" content="Wula.php - Intuitive, Fast and Composable MVC for building php application.">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+        <meta property="og:type" content="article">
+        <meta property="og:title" content="原理 — Wula.php">
+        <meta property="og:description" content="Wula.php - Intuitive, Fast and Composable MVC for building php application.">
+        <meta property="og:image" content="https://wulaphp.com//images/logo.png">
+
+        <link rel="icon" href="/images/logo.png" type="image/x-icon">
+
+        <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600|Roboto Mono' rel='stylesheet' type='text/css'>
+        <link href='//fonts.googleapis.com/css?family=Dosis:500&text=wula.php' rel='stylesheet' type='text/css'>
+
+        <!-- main page styles -->
+        <link rel="stylesheet" href="/css/page.css">
+        <script>window.PAGE_TYPE = "guide"</script>
+    </head>
+    <body class="docs">        <div id="mobile-bar" >
+            <a class="menu-button"></a>
+            <a class="logo" href="/"></a>
+        </div>
+        <div id="header">
+  <a id="logo" href="/">
+    <img src="/images/logo.png">
+    <span>Wula.php</span>
+  </a>
+  <ul id="nav">
+    <li><a href="/guide/" class="nav-link current">文档</a></li>
+<li><a href="/api/" class="nav-link">API</a></li>
+  </ul>
+</div>
+
+        
+            <div id="main" class="fix-sidebar">
+                 
+    <div class="sidebar">
+    <ul class="main-menu">
+        <li><a href="/guide/" class="nav-link current">文档</a></li>
+<li><a href="/api/" class="nav-link">API</a></li>
+    </ul>
+    <div class="list">
+        <a class="become-backer" href="#">
+            成为赞助
+        </a>
+        <ul class="menu-root">
+            
+                
+                
+                    
+                      <li><h3>基础</h3></li>
+                    
+                    
+                    
+                    
+                
+                <li>
+                    <a href="/guide/installation.html" class="sidebar-link">安装</a>
+                </li>
+            
+                
+                
+                    
+                    
+                    
+                    
+                
+                <li>
+                    <a href="/guide/index.html" class="sidebar-link">介绍</a>
+                </li>
+            
+                
+                
+                    
+                    
+                    
+                    
+                
+                <li>
+                    <a href="/guide/how.html" class="sidebar-link current">原理</a>
+                </li>
+            
+                
+                
+                    
+                    
+                    
+                    
+                
+                <li>
+                    <a href="/guide/config.html" class="sidebar-link">配置</a>
+                </li>
+            
+        </ul>
+    </div>
+</div>
+
+<div class="content guide with-sidebar how-guide">
+    
+      <h1>原理</h1>
+    
+    <blockquote><p>知其然，知其所以然。</p>
+<footer><strong>古人 </strong><cite>中国的</cite></footer></blockquote>
+<p>知道wula.php是如何工作的对你有极大的帮助。如果有些东西你现在不能理解，不要灰心。从简单的东西入手，慢慢的你就啥都会了。</p>
+<p class="tip"><br>加QQ群找群主:<a target="_blank" href="http://shang.qq.com/wpa/qunwpa?idkey=9be37f660c70dd33c22f6055cd113215a52e9cab29d46b5c02fe2f68c67a0f17">371487281</a><br></p>
+
+<h2 id="引导文件"><a href="#引导文件" class="headerlink" title="引导文件"></a>引导文件</h2><p>wula.php通过<a href="index.html#bootstrap.php">bootstrap.php</a>将自己拉起来:</p>
+<ol>
+<li>定义目录，常量，公用函数，类加载，错误处理，缓冲区管理等等</li>
+<li>加载公用类库</li>
+<li>加载<a href="config.html">配置</a></li>
+<li>加载<a href="ext.html">扩展</a></li>
+<li>加载<a href="module.html">模块</a></li>
+</ol>
+<p>无论你在写命令行应用还是写基于HTTP协议的应用(通俗的叫法是『网站』)都应在入口文件里<code>include</code>或<code>require</code>它。就像<code>wwwroot/index.php</code>这样:</p>
+<figure class="highlight php"><figcaption><span>wwwroot/index.php</span></figcaption><table><tr><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"><span class="keyword">use</span> <span class="title">wulaphp</span>\<span class="title">app</span>\<span class="title">App</span>;</div><div class="line"></div><div class="line">define(<span class="string">'WWWROOT'</span>, <span class="keyword">__DIR__</span> . DIRECTORY_SEPARATOR);</div><div class="line"><span class="keyword">include</span> WWWROOT . <span class="string">'../bootstrap.php'</span>;</div><div class="line">App::run();<span class="comment">//分发请求</span></div></pre></td></tr></table></figure>
+<p>或者像<code>artisan</code>命令程序这样:</p>
+<figure class="highlight php"><figcaption><span>artisan</span></figcaption><table><tr><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/env php</span></div><div class="line"><span class="meta">&lt;?php</span></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 此处省略大段代码...</div><div class="line"> */</div><div class="line"><span class="keyword">include</span> <span class="keyword">__DIR__</span> . <span class="string">'/bootstrap.php'</span>;</div><div class="line">@ob_end_clean();</div><div class="line"><span class="comment">/**</span></div><div class="line"> * 此处省略大段代码...</div><div class="line"> */</div></pre></td></tr></table></figure>
+<blockquote>
+<p>鼓励你阅读bootstrap.php与vender/wula/wulaphp/bootstrap.php的源文件获取更多信息.</p>
+</blockquote>
+<h2 id="Web应用"><a href="#Web应用" class="headerlink" title="Web应用"></a>Web应用</h2><p>编写中…</p>
+<h2 id="命令行应用"><a href="#命令行应用" class="headerlink" title="命令行应用"></a>命令行应用</h2><p class="tip">如果你想通过命令行访问Controller里的Action，请使用<code>curl</code>或<code>wget</code>。</p>
+
+<p>编写中…</p>
+
+    
+      <div class="guide-links">
+        
+          <span>← <a href="/guide/index.html">介绍</a></span>
+        
+        
+          <span style="float:right"><a href="/guide/config.html">配置</a> →</span>
+        
+      </div>
+    
+    <div class="footer">
+      发现错误？想参与编辑？
+      <a href="https://github.com/ninggf/wula/edit/doc/src/guide/how.md" target="_blank">
+         在 Github 上编辑此页！
+      </a>
+    </div>
+</div>
+            </div>
+            <script src="/js/smooth-scroll.min.js"></script>
+        
+        <!-- main custom script for sidebars, version selects etc. -->        
+        <script src="/js/css.escape.js"></script>
+        <script src="/js/common.js"></script>
+        <!-- fastclick -->
+        <script src="//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          FastClick.attach(document.body)
+        }, false)
+        </script>
+    </body>
+</html>
